@@ -1,0 +1,10 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ repository_import }}
+
+class {{ serviceName }}
+{
+{{ content }}
+}

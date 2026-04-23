@@ -1,0 +1,15 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Models\{{ modelName }};
+use App\Http\Repositories\BaseRepository;
+
+class {{ repository }} extends BaseRepository
+{
+    public function __construct(
+        private {{ modelName }} ${{ modelVarName }}
+    ) {
+        parent::__construct(${{ modelVarName }});
+    }
+}

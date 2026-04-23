@@ -1,0 +1,38 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ repository_import }}
+{{ resource_import }}
+
+class {{ serviceName }}
+{
+    public function __construct(
+        private {{ model }}Repository ${{ repoVarName }}
+    ) {}
+
+    public function getAll()
+    {
+        return {{ model }}Resource::collection($this->{{ repoVarName }}->getAll());
+    }
+
+    public function findById(string $id)
+    {
+        return new {{ model }}Resource($this->{{ repoVarName }}->findById($id));
+    }
+
+    public function create(array $formData)
+    {
+        return new {{ model }}Resource($this->{{ repoVarName }}->create($formData));
+    }
+
+    public function updateById(string $id, array $formData)
+    {
+        return new {{ model }}Resource($this->{{ repoVarName }}->updateById($id, $formData));
+    }
+
+    public function deleteById(string $id)
+    {
+        return $this->{{ repoVarName }}->deleteById($id);
+    }
+}
