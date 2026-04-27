@@ -18,7 +18,6 @@ class Store extends FormRequest
     public function rules(): array
     {
         return [
-            'sender_office_id' => ['required', 'integer', 'exists:offices,id'],
             'recipient_office_id' => ['required', 'integer', 'exists:offices,id'],
             'creator_id' => ['nullable', 'integer', 'exists:users,id'],
             'title' => ['required', 'string', 'max:255'],

@@ -25,78 +25,85 @@ class UserSeeder extends Seeder
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
-                'office_id' => Office::where('code', 'CMO')->first()->id,
-                'email' => 'user1@ticketing.com',
+                'office_id' => Office::where('code', 'CITC')->first()->id,
+                'email' => 'citc1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CITC')->first()->id,
-                'email' => 'user2@ticketing.com',
+                'email' => 'citc2@ticketing.com',
+                'password' => 'ticketing'
+            ],
+            [
+                'first_name' => fake()->firstName(),
+                'last_name' => fake()->lastName(),
+                'office_id' => Office::where('code', 'CMO')->first()->id,
+                'email' => 'cmo1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'GSO')->first()->id,
-                'email' => 'user3@ticketing.com',
+                'email' => 'gso1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CPDO')->first()->id,
-                'email' => 'user4@ticketing.com',
+                'email' => 'cpdo1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CBO')->first()->id,
-                'email' => 'user5@ticketing.com',
+                'email' => 'cbo1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CAO')->first()->id,
-                'email' => 'user6@ticketing.com',
+                'email' => 'cao1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CTO')->first()->id,
-                'email' => 'user7@ticketing.com',
+                'email' => 'cto1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CHO')->first()->id,
-                'email' => 'user8@ticketing.com',
+                'email' => 'cho1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CSWDO')->first()->id,
-                'email' => 'user9@ticketing.com',
+                'email' => 'cswdo1@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CENRO')->first()->id,
-                'email' => 'user10@ticketing.com',
+                'email' => 'cenro10@ticketing.com',
                 'password' => 'ticketing'
             ],
             [
                 'first_name' => fake()->firstName(),
                 'last_name' => fake()->lastName(),
                 'office_id' => Office::where('code', 'CEO')->first()->id,
-                'email' => 'user11@ticketing.com',
+                'email' => 'ceo1@ticketing.com',
                 'password' => 'ticketing'
             ]
         ];

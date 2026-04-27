@@ -20,12 +20,12 @@ class TicketRepository extends BaseRepository
 
     public function generateCode(array $payload)
     {
-        $sender = Office::find($payload['sender_office_id']);
-        $recipient = Office::find($payload['recipient_office_id']);
+        $senderOffice = Office::find(Auth::user()->office_id);
+        $recipientOffice = Office::find($payload['recipient_office_id']);
 
         $randomString = Str::upper(Str::random(5));
 
-        return "{$sender->code}-{$recipient->code}-{$randomString}";
+        return "{$senderOffice->code}-{$recipientOffice->code}-{$randomString}";
     }
 
     public function getAllSentByMyOffice(array $payload)

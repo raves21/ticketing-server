@@ -12,4 +12,9 @@ class OfficeRepository extends BaseRepository
     ) {
         parent::__construct($office);
     }
+
+    public function getAllExceptOwn()
+    {
+        return Office::whereNot('id', auth()->user()->office_id)->get();
+    }
 }

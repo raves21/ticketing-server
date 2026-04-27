@@ -4,16 +4,23 @@ namespace App\Http\Services;
 
 use App\Http\Repositories\OfficeRepository;
 use App\Http\Resources\OfficeResource;
+use Arr;
 
 class OfficeService
 {
     public function __construct(
         private OfficeRepository $officeRepo
-    ) {}
+    ) {
+    }
 
-    public function getAll()
+    public function getAll(array $payload)
     {
-        return OfficeResource::collection($this->officeRepo->getAll());
+        $exceptOwn = Arr::get($payload, 'except_own', false);
+
+        if ($exceptOwn) {
+            return OfficeResource::collection($this->officeRepo->getAllExceptOwn());
+        }
+        return OfficeResource::collection($this->officeRepo->getAll(paginate: false));
     }
 
     public function findById(string $id)

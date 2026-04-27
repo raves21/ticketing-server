@@ -25,6 +25,7 @@ class TicketService
 
     public function getAllAssignedToMyOffice(array $payload)
     {
+        abort(404, "BRUH");
         return TicketResource::collection($this->ticketRepo->getAllAssignedToMyOffice($payload));
     }
 
@@ -63,10 +64,17 @@ class TicketService
 
     public function create(array $payload)
     {
+        $creator = Auth::user();
+
+        if ($creator->office_id === $payload['recipient_office_id']) {
+            abort(400, 'Recipient office cannot be the same as sender office');
+        }
+
         $newTicket =
             $this->ticketRepo->create([
                 ...$payload,
-                'creator_id' => auth()->user()->id,
+                'creator_id' => $creator->id,
+                'sender_office_id' => $creator->office_id,
                 'code' => $this->ticketRepo->generateCode($payload)
             ]);
         return new TicketResource($newTicket->fresh());
