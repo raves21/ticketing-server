@@ -25,6 +25,8 @@ class TicketResource extends JsonResource
             'creator' => new UserResource($this->whenLoaded('creator')),
             'sender_office' => new OfficeResource($this->whenLoaded('senderOffice')),
             'recipient_office' => new OfficeResource($this->whenLoaded('recipientOffice')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

@@ -25,7 +25,6 @@ class TicketService
 
     public function getAllAssignedToMyOffice(array $payload)
     {
-        abort(404, "BRUH");
         return TicketResource::collection($this->ticketRepo->getAllAssignedToMyOffice($payload));
     }
 

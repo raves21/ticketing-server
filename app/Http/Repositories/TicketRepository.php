@@ -20,12 +20,12 @@ class TicketRepository extends BaseRepository
 
     public function generateCode(array $payload)
     {
-        $senderOffice = Office::find(Auth::user()->office_id);
-        $recipientOffice = Office::find($payload['recipient_office_id']);
+        // $senderOffice = Office::find(Auth::user()->office_id);
+        // $recipientOffice = Office::find($payload['recipient_office_id']);
 
         $randomString = Str::upper(Str::random(5));
 
-        return "{$senderOffice->code}-{$recipientOffice->code}-{$randomString}";
+        return $randomString;
     }
 
     public function getAllSentByMyOffice(array $payload)
@@ -45,7 +45,7 @@ class TicketRepository extends BaseRepository
             $query->where('creator_id', Auth::user()->id);
         }
 
-        return $query->with([
+        return $query->latest()->with([
             'creator',
             'recipientOffice',
             'senderOffice'
@@ -69,7 +69,7 @@ class TicketRepository extends BaseRepository
             $query->where('sender_office_id', $senderOfficeId);
         }
 
-        return $query->with([
+        return $query->latest()->with([
             'creator',
             'recipientOffice',
             'senderOffice'
