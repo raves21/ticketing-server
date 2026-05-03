@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Office;
+namespace App\Http\Requests\Unit;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -19,7 +19,7 @@ class Store extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:255', 'unique:offices,code'],
+            'code' => ['required', 'string', 'max:255', 'unique:Units,code'],
             'description' => ['nullable', 'string'],
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Office;
+namespace App\Http\Requests\Unit;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -20,7 +20,7 @@ class Update extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:255'],
-            'code' => ['sometimes', 'string', 'max:255', Rule::unique('offices', 'code')->ignore($this->route('office'))],
+            'code' => ['sometimes', 'string', 'max:255', Rule::unique('Units', 'code')->ignore($this->route('Unit'))],
             'description' => ['nullable', 'string'],
         ];
     }

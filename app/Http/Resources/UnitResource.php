@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OfficeResource extends JsonResource
+class UnitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,12 @@ class OfficeResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'parent_id' => $this->parent_id,
             'name' => $this->name,
             'code' => $this->code,
             'description' => $this->description,
+            'depth' => $this->depth ?? null,
+            'members' => UserResource::collection($this->whenLoaded('users')),
         ];
     }
 }

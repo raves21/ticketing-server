@@ -23,6 +23,10 @@ class User extends Authenticatable
         'remember_token'
     ];
 
+    protected $with = [
+        'unit'
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -35,8 +39,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function office()
+    public function unit()
     {
-        return $this->belongsTo(Office::class);
+        return $this->belongsTo(Unit::class);
     }
+
+    public function unitRoles()
+    {
+        return $this->hasMany(UserUnitRole::class);
+    }
+
+    // public function roleInUnit()
+    // {
+    //     return $this->hasOne(UserUnitRole::class);
+    // }
+
+    // public function getRoleInUnitAttribute()
+    // {
+    //     return $this->unitRoles()->first();
+    // }
+
+    // public function getRoleNameAttribute()
+    // {
+    //     return $this->roleInUnit?->role;
+    // }
 }

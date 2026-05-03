@@ -6,7 +6,7 @@ use App\Http\Repositories\TicketRepository;
 use App\Http\Repositories\TicketStatusLogRepository;
 use App\Http\Resources\TicketResource;
 use App\Enums\TicketStatus;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TicketService
@@ -14,8 +14,7 @@ class TicketService
     public function __construct(
         private TicketRepository $ticketRepo,
         private TicketStatusLogRepository $ticketStatusLogRepo
-    ) {
-    }
+    ) {}
 
     public function getAll()
     {
@@ -23,14 +22,14 @@ class TicketService
         return TicketResource::collection($this->ticketRepo->getAll());
     }
 
-    public function getAllAssignedToMyOffice(array $payload)
+    public function getAllAssignedToMyUnit(array $payload)
     {
-        return TicketResource::collection($this->ticketRepo->getAllAssignedToMyOffice($payload));
+        return TicketResource::collection($this->ticketRepo->getAllAssignedToMyUnit($payload));
     }
 
-    public function getAllSentByMyOffice(array $payload)
+    public function getAllSentByMyUnit(array $payload)
     {
-        return TicketResource::collection($this->ticketRepo->getAllSentByMyOffice($payload));
+        return TicketResource::collection($this->ticketRepo->getAllSentByMyUnit($payload));
     }
 
     public function changeStatus(string $id, array $payload)
@@ -65,18 +64,29 @@ class TicketService
     {
         $creator = Auth::user();
 
-        if ($creator->office_id === $payload['recipient_office_id']) {
-            abort(400, 'Recipient office cannot be the same as sender office');
+        if ($creator->unit_id === $payload['recipient_unit_id']) {
+            abort(400, 'Recipient Unit cannot be the same as sender Unit');
         }
 
+        //create ticket
         $newTicket =
             $this->ticketRepo->create([
                 ...$payload,
                 'creator_id' => $creator->id,
-                'sender_office_id' => $creator->office_id,
+                'sender_unit_id' => $creator->unit_id,
                 'code' => $this->ticketRepo->generateCode($payload)
             ]);
-        return new TicketResource($newTicket->fresh());
+
+        //create ticket status log
+        $this->ticketStatusLogRepo->create([
+            'ticket_id' => $newTicket->id,
+            'old_status' => null,
+            'new_status' => TicketStatus::PENDING,
+            'changed_by_user_id' => $creator->id,
+            'reason' => 'Ticket created'
+        ]);
+
+        return new TicketResource($newTicket->fresh()->load('creator.unit.bloodline'));
     }
 
     public function updateById(string $id, array $payload)

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\Login;
 use App\Http\Resources\UserResource;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -38,6 +38,6 @@ class AuthController extends Controller
 
     public function me()
     {
-        return (new UserResource(Auth::user()->load('office')))->additional(['with_permissions' => true]);
+        return new UserResource(Auth::user()->load(['unit', 'unit.bloodline']))->additional(['with_permissions' => true]);
     }
 }

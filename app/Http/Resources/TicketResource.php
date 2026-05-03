@@ -23,8 +23,8 @@ class TicketResource extends JsonResource
             'status' => $this->status,
             'priority_level' => $this->priority_level,
             'creator' => new UserResource($this->whenLoaded('creator')),
-            'sender_office' => new OfficeResource($this->whenLoaded('senderOffice')),
-            'recipient_office' => new OfficeResource($this->whenLoaded('recipientOffice')),
+            'sender_unit' => new UnitResource($this->whenLoaded('senderUnit')),
+            'recipient_unit' => new UnitResource($this->whenLoaded('recipientUnit')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

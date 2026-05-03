@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('sender_office_id')->references('id')->on('offices');
-            $table->foreignId('recipient_office_id')->references('id')->on('offices');
+            $table->foreignId('sender_unit_id')->references('id')->on('units');
+            $table->foreignId('recipient_unit_id')->references('id')->on('units');
             $table->foreignId('creator_id')->nullable()->references('id')->on('users')->nullOnDelete();
             $table->string('title');
             $table->text('description');

@@ -3,11 +3,10 @@
 namespace App\Http\Repositories;
 
 use App\Enums\TicketStatus;
-use App\Models\Office;
 use App\Models\Ticket;
 use App\Http\Repositories\BaseRepository;
-use Auth;
 use DomainException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class TicketRepository extends BaseRepository
@@ -20,21 +19,21 @@ class TicketRepository extends BaseRepository
 
     public function generateCode(array $payload)
     {
-        // $senderOffice = Office::find(Auth::user()->office_id);
-        // $recipientOffice = Office::find($payload['recipient_office_id']);
+        // $senderUnit = Unit::find(Auth::user()->unit_id);
+        // $recipientUnit = Unit::find($payload['recipient_unit_id']);
 
         $randomString = Str::upper(Str::random(5));
 
         return $randomString;
     }
 
-    public function getAllSentByMyOffice(array $payload)
+    public function getAllSentByMyUnit(array $payload)
     {
         $search = $payload['search'] ?? null;
         $createdByMe = $payload['created_by_me'] ?? null;
 
         $query = $this->ticket
-            ->where('sender_office_id', Auth::user()->office_id);
+            ->where('sender_unit_id', Auth::user()->unit_id);
 
         if ($search) {
             $query->whereRaw("LOWER(title) LIKE LOWER(?)", "%{$search}%")
@@ -47,32 +46,32 @@ class TicketRepository extends BaseRepository
 
         return $query->latest()->with([
             'creator',
-            'recipientOffice',
-            'senderOffice'
+            'recipientUnit',
+            'senderUnit'
         ])->paginate();
     }
 
-    public function getAllAssignedToMyOffice(array $payload)
+    public function getAllAssignedToMyUnit(array $payload)
     {
         $search = $payload['search'] ?? null;
-        $senderOfficeId = $payload['sender_office_id'] ?? null;
+        $senderUnitId = $payload['sender_unit_id'] ?? null;
 
         $query = $this->ticket
-            ->where('recipient_office_id', Auth::user()->office_id);
+            ->where('recipient_unit_id', Auth::user()->unit_id);
 
         if ($search) {
             $query->whereRaw("LOWER(title) LIKE LOWER(?)", "%{$search}%")
                 ->orWhereRaw("LOWER(code) LIKE LOWER(?)", "%{$search}%");
         }
 
-        if ($senderOfficeId) {
-            $query->where('sender_office_id', $senderOfficeId);
+        if ($senderUnitId) {
+            $query->where('sender_unit_id', $senderUnitId);
         }
 
         return $query->latest()->with([
             'creator',
-            'recipientOffice',
-            'senderOffice'
+            'recipientUnit',
+            'senderUnit'
         ])->paginate();
     }
 

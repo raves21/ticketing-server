@@ -19,7 +19,7 @@ class Update extends FormRequest
     public function rules(): array
     {
         return [
-            'office_id' => ['sometimes', 'integer', 'exists:offices,id'],
+            'Unit_id' => ['sometimes', 'integer', 'exists:Units,id'],
             'first_name' => ['sometimes', 'string', 'max:255'],
             'last_name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($this->route('user'))],

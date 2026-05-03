@@ -5,7 +5,7 @@ namespace App\Http\Requests\Ticket;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SentByMyOffice extends FormRequest
+class SentByMyUnit extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

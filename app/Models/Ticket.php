@@ -16,19 +16,19 @@ class Ticket extends Model
     ];
 
     protected $with = [
-        'senderOffice',
-        'recipientOffice',
+        'senderUnit',
+        'recipientUnit',
         'creator'
     ];
 
-    public function senderOffice()
+    public function senderUnit()
     {
-        return $this->belongsTo(Office::class, 'sender_office_id');
+        return $this->belongsTo(Unit::class, 'sender_unit_id');
     }
 
-    public function recipientOffice()
+    public function recipientUnit()
     {
-        return $this->belongsTo(Office::class, 'recipient_office_id');
+        return $this->belongsTo(Unit::class, 'recipient_unit_id');
     }
 
     public function creator()

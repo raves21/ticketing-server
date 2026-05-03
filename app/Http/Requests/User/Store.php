@@ -18,7 +18,7 @@ class Store extends FormRequest
     public function rules(): array
     {
         return [
-            'office_id' => ['required', 'integer', 'exists:offices,id'],
+            'Unit_id' => ['required', 'integer', 'exists:Units,id'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
