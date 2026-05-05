@@ -13,9 +13,10 @@ return new class extends Migration {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('sender_unit_id')->references('id')->on('units');
-            $table->foreignId('recipient_unit_id')->references('id')->on('units');
-            $table->foreignId('creator_id')->nullable()->references('id')->on('users')->nullOnDelete();
+            $table->foreignId('sender_unit_id')->nullable()->constrained('units')->nullOnDelete();
+            $table->foreignId('current_unit_id')->nullable()->constrained('units')->nullOnDelete();
+            $table->foreignId('recipient_unit_id')->nullable()->constrained('units')->nullOnDelete();
+            $table->foreignId('creator_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('title');
             $table->text('description');
             $table->enum('status', [
@@ -29,6 +30,8 @@ return new class extends Migration {
             ])->default('pending');
             $table->enum('priority_level', ['routine', 'urgent', 'emergency']);
             $table->timestamps();
+
+            $table->index(['title']);
         });
     }
 

@@ -10,14 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('ticket_status_logs', function (Blueprint $table) {
+        Schema::create('ticket_involved_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ticket_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('changed_by_user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('old_status');
-            $table->string('new_status');
-            $table->text('reason')->nullable();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['ticket_id', 'user_id']);
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_status_logs');
+        Schema::dropIfExists('ticket_involved_users');
     }
 };

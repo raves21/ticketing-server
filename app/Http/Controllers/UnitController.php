@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Unit\GetRootUnitMembers;
+use App\Http\Requests\Unit\GetRootUnitTree;
+use App\Http\Requests\Unit\GetUnitMembers;
 use App\Http\Requests\Unit\Index;
 use App\Http\Requests\Unit\Store;
 use App\Http\Requests\Unit\Update;
@@ -12,7 +15,8 @@ class UnitController extends Controller
 {
     public function __construct(
         private UnitService $unitService
-    ) {}
+    ) {
+    }
 
     public function index(Index $request)
     {
@@ -37,5 +41,30 @@ class UnitController extends Controller
     public function destroy(string $id)
     {
         return $this->unitService->deleteById($id);
+    }
+
+    public function getMyUnits()
+    {
+        return $this->unitService->getMyUnits();
+    }
+
+    public function getRootUnits()
+    {
+        return $this->unitService->getRootUnits();
+    }
+
+    public function getRootUnitTree(GetRootUnitTree $request)
+    {
+        return $this->unitService->getRootUnitTree($request->validated());
+    }
+
+    public function getRootUnitMembers(GetRootUnitMembers $request)
+    {
+        return $this->unitService->getRootUnitMembers($request->validated());
+    }
+
+    public function getUnitMembers(GetUnitMembers $request)
+    {
+        return $this->unitService->getUnitMembers($request->validated());
     }
 }

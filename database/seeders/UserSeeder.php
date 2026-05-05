@@ -1,174 +1,102 @@
 <?php
 
+
 namespace Database\Seeders;
 
-use App\Models\Unit;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Unit;
+use App\Models\UserUnitRole;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $citcUsers = [
-            [
-                'first_name' => 'Nep',
-                'last_name' => 'Talavera',
-                'unit_id' => Unit::where('code', 'CITC')->first()->id,
-                'email' => 'nep@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Sharon',
-                'last_name' => 'Lomantas',
-                'unit_id' => Unit::where('code', 'SDMD_SHARON')->first()->id,
-                'email' => 'sharon@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Doodz',
-                'last_name' => 'Lopez',
-                'unit_id' => Unit::where('code', 'CITC_ND')->first()->id,
-                'email' => 'doodz@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Myla',
-                'last_name' => 'Myla',
-                'unit_id' => Unit::where('code', 'CITC_AD')->first()->id,
-                'email' => 'myla@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Arib',
-                'last_name' => 'Ranara',
-                'unit_id' => Unit::where('code', 'SDMD_SHARON')->first()->id,
-                'email' => 'arib@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Rexdan',
-                'last_name' => 'Tautho',
-                'unit_id' => Unit::where('code', 'CITC_ND')->first()->id,
-                'email' => 'rexdan@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Mafe',
-                'last_name' => 'Caledes',
-                'unit_id' => Unit::where('code', 'CITC_AD')->first()->id,
-                'email' => 'mafe@ticketing.com',
-                'password' => 'ticketing'
-            ],
-        ];
+        $this->seedRootUnits();
+        $this->seedAllOtherUnits();
+    }
 
-        foreach ($citcUsers as $user) {
-            $user = User::create($user);
+    private function seedRootUnits()
+    {
+        $roots = Unit::whereNull('parent_id')->get();
+
+        foreach ($roots as $root) {
+            $user = User::create([
+                'first_name' => 'Head',
+                'last_name' => $root->code,
+                'email' => strtolower($root->code) . '@example.com',
+                'password' => Hash::make('password'),
+                'root_unit_id' => $root->id,
+            ]);
+
             $user->assignRole('user');
+
+            UserUnitRole::create([
+                'user_id' => $user->id,
+                'unit_id' => $root->id,
+                'role' => UserUnitRole::ADMIN,
+            ]);
         }
+    }
 
-        $cmoUsers = [
-            [
-                'first_name' => 'Baste',
-                'last_name' => 'Osmena',
-                'unit_id' => Unit::where('code', 'CMO')->first()->id,
-                'email' => 'baste@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Janelle',
-                'last_name' => 'Santos',
-                'unit_id' => Unit::where('code', 'CMO_ED')->first()->id,
-                'email' => 'janelle@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Carlo',
-                'last_name' => 'Reyes',
-                'unit_id' => Unit::where('code', 'CMO_PRD')->first()->id,
-                'email' => 'carlo@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Liza',
-                'last_name' => 'Montoya',
-                'unit_id' => Unit::where('code', 'CMO_LAD')->first()->id,
-                'email' => 'liza@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Marco',
-                'last_name' => 'Villanueva',
-                'unit_id' => Unit::where('code', 'CMO_ED_TB')->first()->id,
-                'email' => 'marco@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Nina',
-                'last_name' => 'Flores',
-                'unit_id' => Unit::where('code', 'CMO_ED_TJ')->first()->id,
-                'email' => 'nina@ticketing.com',
-                'password' => 'ticketing'
-            ],
-        ];
+    private function seedAllOtherUnits()
+    {
+        $units = Unit::whereNotNull('parent_id')->get();
 
-        foreach ($cmoUsers as $user) {
-            $user = User::create($user);
-            $user->assignRole('user');
-        }
+        foreach ($units as $unit) {
+            $rootId = $unit->ancestorsAndSelf->first(fn($u) => $u->parent_id === null)->id;
 
-        $ocboUsers = [
-            [
-                'first_name' => 'Bryan',
-                'last_name' => 'Dela Cruz',
-                'unit_id' => Unit::where('code', 'OCBO')->first()->id,
-                'email' => 'bryan@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Junald',
-                'last_name' => 'Macaraeg',
-                'unit_id' => Unit::where('code', 'OCBO_BPD')->first()->id,
-                'email' => 'junald@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Rosa',
-                'last_name' => 'Aguirre',
-                'unit_id' => Unit::where('code', 'OCBO_ICD')->first()->id,
-                'email' => 'rosa@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Tony',
-                'last_name' => 'Bautista',
-                'unit_id' => Unit::where('code', 'OCBO_ARD')->first()->id,
-                'email' => 'tony@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Gem',
-                'last_name' => 'Soriano',
-                'unit_id' => Unit::where('code', 'OCBO_BPD_TB')->first()->id,
-                'email' => 'gem@ticketing.com',
-                'password' => 'ticketing'
-            ],
-            [
-                'first_name' => 'Rhea',
-                'last_name' => 'Navarro',
-                'unit_id' => Unit::where('code', 'OCBO_BPD_TJ')->first()->id,
-                'email' => 'rhea@ticketing.com',
-                'password' => 'ticketing'
-            ],
-        ];
+            // ADMIN
+            $admin = User::create([
+                'first_name' => 'Admin',
+                'last_name' => $unit->code,
+                'email' => strtolower($unit->code) . '_admin@example.com',
+                'password' => Hash::make('password'),
+                'root_unit_id' => $rootId,
+            ]);
 
-        foreach ($ocboUsers as $user) {
-            $user = User::create($user);
-            $user->assignRole('user');
+            $admin->assignRole('user');
+
+            UserUnitRole::create([
+                'user_id' => $admin->id,
+                'unit_id' => $unit->id,
+                'role' => UserUnitRole::ADMIN,
+            ]);
+
+            // STAFF 1
+            $staff1 = User::create([
+                'first_name' => 'Staff1',
+                'last_name' => $unit->code,
+                'email' => strtolower($unit->code) . '_staff1@example.com',
+                'password' => Hash::make('password'),
+                'root_unit_id' => $rootId,
+            ]);
+
+            $staff1->assignRole('user');
+
+            UserUnitRole::create([
+                'user_id' => $staff1->id,
+                'unit_id' => $unit->id,
+                'role' => UserUnitRole::STAFF,
+            ]);
+
+            // STAFF 2
+            $staff2 = User::create([
+                'first_name' => 'Staff2',
+                'last_name' => $unit->code,
+                'email' => strtolower($unit->code) . '_staff2@example.com',
+                'password' => Hash::make('password'),
+                'root_unit_id' => $rootId,
+            ]);
+
+            $staff2->assignRole('user');
+
+            UserUnitRole::create([
+                'user_id' => $staff2->id,
+                'unit_id' => $unit->id,
+                'role' => UserUnitRole::STAFF,
+            ]);
         }
     }
 }

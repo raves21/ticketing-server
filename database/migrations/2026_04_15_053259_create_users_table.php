@@ -12,13 +12,15 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('id');
-            $table->foreignId('unit_id')->constrained();
+            $table->foreignId('root_unit_id')->nullable()->constrained('units')->nullOnDelete();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index(['first_name', 'last_name']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

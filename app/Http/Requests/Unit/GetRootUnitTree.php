@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Ticket;
+namespace App\Http\Requests\Unit;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class SentByMyUnit extends FormRequest
+class GetRootUnitTree extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,7 @@ class SentByMyUnit extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string'],
-            'created_by_me' => ['nullable', 'boolean']
+            'root_unit_id' => ['required', Rule::exists('units', 'id')->where('parent_id', null)]
         ];
     }
 }

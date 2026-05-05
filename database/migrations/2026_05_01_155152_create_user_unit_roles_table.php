@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\UserUnitRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('unit_id')->constrained()->cascadeOnDelete();
-            $table->enum('role', ['staff', 'team_lead', 'division_head', 'office_head']);
+            $table->enum('role', [UserUnitRole::STAFF, UserUnitRole::ADMIN]);
             $table->timestamps();
+
+            $table->unique(['user_id', 'unit_id']);
         });
     }
 

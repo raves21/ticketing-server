@@ -10,9 +10,16 @@ class Unit extends Model
 
     use \Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
-    public function users()
+    public function rootUnitMembers()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'root_unit_id');
+    }
+
+    public function unitMembers()
+    {
+        return $this->belongsToMany(User::class, 'user_unit_roles', 'unit_id', 'user_id')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function ticketsSent()

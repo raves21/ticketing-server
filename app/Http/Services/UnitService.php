@@ -4,13 +4,15 @@ namespace App\Http\Services;
 
 use App\Http\Repositories\UnitRepository;
 use App\Http\Resources\UnitResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Arr;
 
 class UnitService
 {
     public function __construct(
         private UnitRepository $unitRepo
-    ) {}
+    ) {
+    }
 
     public function getAll(array $payload)
     {
@@ -40,5 +42,41 @@ class UnitService
     public function deleteById(string $id)
     {
         return $this->unitRepo->deleteById($id);
+    }
+
+    public function getRootUnits()
+    {
+        return UnitResource::collection($this->unitRepo->getAll(filters: ['parent_id' => null]));
+    }
+
+    public function getRootUnitTree(array $payload)
+    {
+        if (!$this->unitRepo->isRootUnit($payload['root_unit_id'])) {
+            abort(400, 'Given id is not a root unit.');
+        }
+        $rootUnit = $this->unitRepo->findById($payload['root_unit_id']);
+
+        return UnitResource::collection($this->unitRepo->getRootUnitTree($rootUnit));
+    }
+
+    public function getMyUnits()
+    {
+        return UnitResource::collection($this->unitRepo->getMyUnits());
+    }
+
+    public function getRootUnitMembers(array $payload)
+    {
+        if (!$this->unitRepo->isRootUnit($payload['root_unit_id'])) {
+            abort(400, 'Given id is not a root unit.');
+        }
+        return UserResource::collection($this->unitRepo->getRootUnitMembers($payload));
+    }
+
+    public function getUnitMembers(array $payload)
+    {
+        if (!$this->unitRepo->isRootUnit($payload['unit_id'])) {
+            abort(400, 'Given id is not a root unit.');
+        }
+        return UserResource::collection($this->unitRepo->getUnitMembers($payload));
     }
 }

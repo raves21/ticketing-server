@@ -2,128 +2,116 @@
 
 namespace Database\Seeders;
 
-use App\Models\Unit;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Unit;
 
 class UnitSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $depth0 = [
-            [
-                'name' => 'City Information Technology Center',
-                'code' => 'CITC',
-            ],
-            [
-                'name' => 'City Mayor\'s Office',
-                'code' => 'CMO',
-            ],
-            [
-                'name' => 'Office of the City Building Official',
-                'code' => 'OCBO',
-            ]
-        ];
+        // ROOT UNITS
+        $citc = Unit::create([
+            'name' => 'City Information Technology Center',
+            'code' => 'CITC',
+        ]);
 
-        foreach ($depth0 as $unit) {
-            Unit::create($unit);
-        }
+        $cmo = Unit::create([
+            'name' => 'City Mayor\'s Office',
+            'code' => 'CMO',
+        ]);
 
-        $depth1 = [
-            [
-                'name' => 'Software Development and Management Division',
-                'code' => 'CITC_SDMD',
-                'parent_id' => 1
-            ],
-            [
-                'name' => 'Network Division',
-                'code' => 'CITC_ND',
-                'parent_id' => 1
-            ],
-            [
-                'name' => 'Administrative Division',
-                'code' => 'CITC_AD',
-                'parent_id' => 1
-            ],
-            // CMO depth1
-            [
-                'name' => 'Executive Division',
-                'code' => 'CMO_ED',
-                'parent_id' => 2
-            ],
-            [
-                'name' => 'Public Relations Division',
-                'code' => 'CMO_PRD',
-                'parent_id' => 2
-            ],
-            [
-                'name' => 'Legal Affairs Division',
-                'code' => 'CMO_LAD',
-                'parent_id' => 2
-            ],
-            // OCBO depth1
-            [
-                'name' => 'Building Permits Division',
-                'code' => 'OCBO_BPD',
-                'parent_id' => 3
-            ],
-            [
-                'name' => 'Inspection and Compliance Division',
-                'code' => 'OCBO_ICD',
-                'parent_id' => 3
-            ],
-            [
-                'name' => 'Administrative and Records Division',
-                'code' => 'OCBO_ARD',
-                'parent_id' => 3
-            ],
+        // ========================
+        // CITC STRUCTURE
+        // ========================
 
-        ];
+        $sysdev = Unit::create([
+            'name' => 'SYSDEV Division',
+            'code' => 'SYSDEV',
+            'parent_id' => $citc->id,
+        ]);
 
-        foreach ($depth1 as $unit) {
-            Unit::create($unit);
-        }
+        $network = Unit::create([
+            'name' => 'Network Division',
+            'code' => 'NETWORK',
+            'parent_id' => $citc->id,
+        ]);
 
-        $depth2 = [
-            [
-                'name' => 'Team Sharon',
-                'code' => 'CITC_SDMD_TS',
-                'parent_id' => 4
-            ],
-            [
-                'name' => 'Team Art',
-                'code' => 'CITC_SDMD_TA',
-                'parent_id' => 4
-            ],
-            // CMO Executive Division depth2
-            [
-                'name' => 'Team Baste',
-                'code' => 'CMO_ED_TB',
-                'parent_id' => 7
-            ],
-            [
-                'name' => 'Team Janelle',
-                'code' => 'CMO_ED_TJ',
-                'parent_id' => 7
-            ],
-            // OCBO Building Permits Division depth2
-            [
-                'name' => 'Team Bryan',
-                'code' => 'OCBO_BPD_TB',
-                'parent_id' => 10
-            ],
-            [
-                'name' => 'Team Junald',
-                'code' => 'OCBO_BPD_TJ',
-                'parent_id' => 10
-            ],
-        ];
+        $admin = Unit::create([
+            'name' => 'Admin Division',
+            'code' => 'ADMIN',
+            'parent_id' => $citc->id,
+        ]);
 
-        foreach ($depth2 as $unit) {
-            Unit::create($unit);
-        }
+        // SYSDEV TEAMS
+
+        $teamSharon = Unit::create([
+            'name' => 'Team Sharon',
+            'code' => 'TEAM_SHARON',
+            'parent_id' => $sysdev->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Team Celina',
+            'code' => 'TEAM_CELINA',
+            'parent_id' => $teamSharon->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Team Melba',
+            'code' => 'TEAM_MELBA',
+            'parent_id' => $teamSharon->id,
+        ]);
+
+        $teamArturo = Unit::create([
+            'name' => 'Team Arturo',
+            'code' => 'TEAM_ARTURO',
+            'parent_id' => $sysdev->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Team Reno',
+            'code' => 'TEAM_RENO',
+            'parent_id' => $teamArturo->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Team Louella',
+            'code' => 'TEAM_LOUELLA',
+            'parent_id' => $teamArturo->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Team Jun',
+            'code' => 'TEAM_JUN',
+            'parent_id' => $sysdev->id,
+        ]);
+
+        // ========================
+        // CMO STRUCTURE (simpler)
+        // ========================
+
+        $exec = Unit::create([
+            'name' => 'Executive Division',
+            'code' => 'EXEC',
+            'parent_id' => $cmo->id,
+        ]);
+
+        $legal = Unit::create([
+            'name' => 'Legal Division',
+            'code' => 'LEGAL',
+            'parent_id' => $cmo->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Public Affairs Team',
+            'code' => 'PA_TEAM',
+            'parent_id' => $exec->id,
+        ]);
+
+        Unit::create([
+            'name' => 'Compliance Team',
+            'code' => 'COMP_TEAM',
+            'parent_id' => $legal->id,
+        ]);
     }
 }

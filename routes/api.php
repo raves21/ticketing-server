@@ -21,12 +21,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('auth/me', [AuthController::class, 'me']);
 
     // Units
+    Route::get('units/root-unit-tree', [UnitController::class, 'getRootUnitTree']);
+    Route::get('units/root-unit-members', [UnitController::class, 'getRootUnitMembers']);
+    Route::get('units/unit-members', [UnitController::class, 'getUnitMembers']);
+    Route::get('units/my-units', [UnitController::class, 'getMyUnits']);
+    Route::get('units/root-units', [UnitController::class, 'getRootUnits']);
     Route::apiResource('units', UnitController::class)->except(['update']);
     Route::post('units/{unit}', [UnitController::class, 'update']);
 
     // Tickets
-    Route::get('tickets/assigned-to-my-unit', [TicketController::class, 'getAllAssignedToMyUnit']);
-    Route::get('tickets/sent-by-my-unit', [TicketController::class, 'getAllSentByMyUnit']);
+    Route::get('tickets/received-by-unit', [TicketController::class, 'getTicketsReceivedByUnit']);
+    Route::get('tickets/sent-by-unit', [TicketController::class, 'getTicketsSentByUnit']);
     Route::apiResource('tickets', TicketController::class)->except(['update']);
     Route::post('tickets/{ticket}', [TicketController::class, 'update']);
     Route::post('tickets/{ticket}/change-status', [TicketController::class, 'changeStatus']);

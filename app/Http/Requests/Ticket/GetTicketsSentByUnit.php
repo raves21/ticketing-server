@@ -5,7 +5,7 @@ namespace App\Http\Requests\Ticket;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AssignedToMyUnit extends FormRequest
+class GetTicketsSentByUnit extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class AssignedToMyUnit extends FormRequest
     public function rules(): array
     {
         return [
+            'unit_id' => ['required', 'exists:units,id'],
             'search' => ['nullable', 'string'],
-            'sender_unit_id' => ['nullable', 'exists:Units,id']
         ];
     }
 }

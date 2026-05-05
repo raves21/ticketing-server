@@ -40,4 +40,9 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketStatusLog::class);
     }
+
+    public function involvedUsers()
+    {
+        return $this->belongsToMany(User::class, 'ticket_involved_users', 'ticket_id', 'user_id')->withTimestamps();
+    }
 }

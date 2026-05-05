@@ -24,7 +24,7 @@ class User extends Authenticatable
     ];
 
     protected $with = [
-        'unit'
+        'rootUnit'
     ];
 
     /**
@@ -39,9 +39,16 @@ class User extends Authenticatable
         ];
     }
 
-    public function unit()
+    public function rootUnit()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class, 'root_unit_id');
+    }
+
+    public function units()
+    {
+        return $this->belongsToMany(Unit::class, 'user_unit_roles', 'user_id', 'unit_id')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function unitRoles()
@@ -49,18 +56,8 @@ class User extends Authenticatable
         return $this->hasMany(UserUnitRole::class);
     }
 
-    // public function roleInUnit()
-    // {
-    //     return $this->hasOne(UserUnitRole::class);
-    // }
-
-    // public function getRoleInUnitAttribute()
-    // {
-    //     return $this->unitRoles()->first();
-    // }
-
-    // public function getRoleNameAttribute()
-    // {
-    //     return $this->roleInUnit?->role;
-    // }
+    public function ticketsInvolved()
+    {
+        return $this->belongsToMany(Ticket::class, 'ticket_involved_users', 'user_id', 'ticket_id')->withTimestamps();
+    }
 }

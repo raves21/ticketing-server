@@ -13,8 +13,35 @@ class UnitRepository extends BaseRepository
         parent::__construct($unit);
     }
 
+    public function isRootUnit(string $unitId)
+    {
+        return Unit::findOrFail($unitId)->parent_id === null;
+    }
+
     public function getAllExceptOwn()
     {
         return Unit::whereNot('id', auth()->user()->unit_id)->get();
+    }
+
+    public function getRootUnitTree(Unit $rootUnit)
+    {
+        return $rootUnit->bloodline;
+    }
+
+    public function getMyUnits()
+    {
+        return Unit::whereHas('users', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->get();
+    }
+
+    public function getRootUnitMembers(array $payload)
+    {
+        return Unit::findOrFail($payload['root_unit_id'])->rootUnitMembers()->paginate();
+    }
+
+    public function getUnitMembers(array $payload)
+    {
+        return Unit::findOrFail($payload['unit_id'])->unitMembers()->paginate();
     }
 }

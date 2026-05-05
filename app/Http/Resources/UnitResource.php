@@ -21,6 +21,7 @@ class UnitResource extends JsonResource
             'code' => $this->code,
             'description' => $this->description,
             'depth' => $this->depth ?? null,
+            'path' => $this->path ?? null,
             'members' => UserResource::collection($this->whenLoaded('users')),
         ];
     }

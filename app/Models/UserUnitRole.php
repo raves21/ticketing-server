@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserUnitRole extends Model
 {
-    public const ROLE_STAFF = 'staff';
-    public const ROLE_TEAM_LEAD = 'team_lead';
-    public const ROLE_DIVISION_HEAD = 'division_head';
-    public const ROLE_OFFICE_HEAD = 'office_head';
+    public const STAFF = 'staff';
+
+    public const ADMIN = 'admin';
 
     protected $guarded = ['id'];
 

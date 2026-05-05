@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ticket\AssignedToMyUnit;
 use App\Http\Requests\Ticket\ChangeStatus;
+use App\Http\Requests\Ticket\GetTicketsReceivedByUnit;
+use App\Http\Requests\Ticket\GetTicketsSentByUnit;
 use App\Http\Requests\Ticket\SentByMyUnit;
 use App\Http\Requests\Ticket\Store;
 use App\Http\Requests\Ticket\Update;
@@ -14,7 +16,8 @@ class TicketController extends Controller
 {
     public function __construct(
         private TicketService $ticketService
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -41,14 +44,14 @@ class TicketController extends Controller
         return $this->ticketService->deleteById($id);
     }
 
-    public function getAllAssignedToMyUnit(AssignedToMyUnit $request)
+    public function getTicketsReceivedByUnit(GetTicketsReceivedByUnit $request)
     {
-        return $this->ticketService->getAllAssignedToMyUnit($request->validated());
+        return $this->ticketService->getTicketsReceivedByUnit($request->validated());
     }
 
-    public function getAllSentByMyUnit(SentByMyUnit $request)
+    public function getTicketsSentByUnit(GetTicketsSentByUnit $request)
     {
-        return $this->ticketService->getAllSentByMyUnit($request->validated());
+        return $this->ticketService->getTicketsSentByUnit($request->validated());
     }
 
     public function changeStatus(ChangeStatus $request, string $id)

@@ -14,7 +14,8 @@ class TicketService
     public function __construct(
         private TicketRepository $ticketRepo,
         private TicketStatusLogRepository $ticketStatusLogRepo
-    ) {}
+    ) {
+    }
 
     public function getAll()
     {
@@ -22,14 +23,14 @@ class TicketService
         return TicketResource::collection($this->ticketRepo->getAll());
     }
 
-    public function getAllAssignedToMyUnit(array $payload)
+    public function getTicketsReceivedByUnit(array $payload)
     {
-        return TicketResource::collection($this->ticketRepo->getAllAssignedToMyUnit($payload));
+        return TicketResource::collection($this->ticketRepo->getAll(filters: ['recipient_unit_id' => $payload['unit_id']]));
     }
 
-    public function getAllSentByMyUnit(array $payload)
+    public function getTicketsSentByUnit(array $payload)
     {
-        return TicketResource::collection($this->ticketRepo->getAllSentByMyUnit($payload));
+        return TicketResource::collection($this->ticketRepo->getAll(filters: ['sender_unit_id' => $payload['unit_id']]));
     }
 
     public function changeStatus(string $id, array $payload)
