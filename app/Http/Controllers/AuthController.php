@@ -18,7 +18,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'token' => $token,
-                'user' => new UserResource($user),
+                'user' => new UserResource($user->load('units')),
             ]);
         }
 
@@ -38,6 +38,6 @@ class AuthController extends Controller
 
     public function me()
     {
-        return new UserResource(Auth::user()->load(['unit', 'unit.bloodline']))->additional(['with_permissions' => true]);
+        return new UserResource(Auth::user()->load('units'))->additional(['with_permissions' => true]);
     }
 }

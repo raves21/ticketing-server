@@ -44,9 +44,14 @@ class UnitService
         return $this->unitRepo->deleteById($id);
     }
 
-    public function getRootUnits()
+    public function getRootUnits(array $payload)
     {
-        return UnitResource::collection($this->unitRepo->getAll(filters: ['parent_id' => null]));
+        return UnitResource::collection(
+            $this->unitRepo->getAll(
+                filters: ['parent_id' => null],
+                paginate: Arr::get($payload, 'paginate', false)
+            ),
+        );
     }
 
     public function getRootUnitTree(array $payload)
@@ -72,11 +77,8 @@ class UnitService
         return UserResource::collection($this->unitRepo->getRootUnitMembers($payload));
     }
 
-    public function getUnitMembers(array $payload)
+    public function getUnitMembers(string $unitId)
     {
-        if (!$this->unitRepo->isRootUnit($payload['unit_id'])) {
-            abort(400, 'Given id is not a root unit.');
-        }
-        return UserResource::collection($this->unitRepo->getUnitMembers($payload));
+        return UserResource::collection($this->unitRepo->getUnitMembers($unitId));
     }
 }

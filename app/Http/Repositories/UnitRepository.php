@@ -30,7 +30,7 @@ class UnitRepository extends BaseRepository
 
     public function getMyUnits()
     {
-        return Unit::whereHas('users', function ($query) {
+        return Unit::whereHas('unitMembers', function ($query) {
             $query->where('user_id', auth()->id());
         })->get();
     }
@@ -40,8 +40,8 @@ class UnitRepository extends BaseRepository
         return Unit::findOrFail($payload['root_unit_id'])->rootUnitMembers()->paginate();
     }
 
-    public function getUnitMembers(array $payload)
+    public function getUnitMembers(string $unitId)
     {
-        return Unit::findOrFail($payload['unit_id'])->unitMembers()->paginate();
+        return Unit::findOrFail($unitId)->unitMembers()->get();
     }
 }

@@ -4,9 +4,8 @@ namespace App\Http\Requests\Unit;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class GetUnitMembers extends FormRequest
+class GetRootUnits extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +23,7 @@ class GetUnitMembers extends FormRequest
     public function rules(): array
     {
         return [
-            'root_unit_id' => ['required', Rule::exists('units', 'id')->where('parent_id', null)]
+            'paginate' => ['nullable', 'boolean']
         ];
     }
 }

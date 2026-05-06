@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('code')->unique();
             $table->foreignId('sender_unit_id')->nullable()->constrained('units')->nullOnDelete();
+
+            //a ticket can be re-assigned to other sub-units within a root unit. current_unit_id is the unit that is currently responsible for the ticket.
+            //when it is re-assigned to a new unit, the new unit will be the current_unit_id,
             $table->foreignId('current_unit_id')->nullable()->constrained('units')->nullOnDelete();
             $table->foreignId('recipient_unit_id')->nullable()->constrained('units')->nullOnDelete();
             $table->foreignId('creator_id')->nullable()->constrained('users')->nullOnDelete();

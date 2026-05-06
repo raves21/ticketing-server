@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Unit\GetRootUnitMembers;
+use App\Http\Requests\Unit\GetRootUnits;
 use App\Http\Requests\Unit\GetRootUnitTree;
-use App\Http\Requests\Unit\GetUnitMembers;
 use App\Http\Requests\Unit\Index;
 use App\Http\Requests\Unit\Store;
 use App\Http\Requests\Unit\Update;
@@ -48,9 +48,9 @@ class UnitController extends Controller
         return $this->unitService->getMyUnits();
     }
 
-    public function getRootUnits()
+    public function getRootUnits(GetRootUnits $request)
     {
-        return $this->unitService->getRootUnits();
+        return $this->unitService->getRootUnits($request->validated());
     }
 
     public function getRootUnitTree(GetRootUnitTree $request)
@@ -63,8 +63,8 @@ class UnitController extends Controller
         return $this->unitService->getRootUnitMembers($request->validated());
     }
 
-    public function getUnitMembers(GetUnitMembers $request)
+    public function getUnitMembers(string $unitId)
     {
-        return $this->unitService->getUnitMembers($request->validated());
+        return $this->unitService->getUnitMembers($unitId);
     }
 }

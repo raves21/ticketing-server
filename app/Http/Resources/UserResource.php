@@ -20,10 +20,7 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'role' => $this->roles->first()->name,
-            $this->mergeWhen(
-                $this->units,
-                fn() => ['root_unit' => new UnitResource($this->whenLoaded('rootUnit'))]
-            ),
+            'root_unit' => new UnitResource($this->whenLoaded('rootUnit')),
             'units' => UnitResource::collection($this->whenLoaded('units')),
             $this->mergeWhen(
                 $this->additional && $this->additional['with_permissions'],

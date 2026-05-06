@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Units
     Route::get('units/root-unit-tree', [UnitController::class, 'getRootUnitTree']);
     Route::get('units/root-unit-members', [UnitController::class, 'getRootUnitMembers']);
-    Route::get('units/unit-members', [UnitController::class, 'getUnitMembers']);
+    Route::get('units/{unit}/members', [UnitController::class, 'getUnitMembers']);
     Route::get('units/my-units', [UnitController::class, 'getMyUnits']);
     Route::get('units/root-units', [UnitController::class, 'getRootUnits']);
     Route::apiResource('units', UnitController::class)->except(['update']);
